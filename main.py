@@ -26,8 +26,8 @@ SAVE_PATH = "save_breakout/best"
 
 game_name = "Breakout-v0"
 # game_name = "Pong-v0"
-play = True
-LSTM = False
+play = True # Render gym environment ?
+LSTM = False # Use LSTM ?
 #---------------------------------------------------------------------------
 
 # MPI initialization.
@@ -79,8 +79,7 @@ def learner(idx, agent) :
 		sync = (t == 0) # request lastest weights ?
 
 		# Train the model for some game steps.
-		# n_step = 5
-		n_step = np.random.randint(5, 6)
+		n_step = np.random.randint(128, 256)
 		(score, n_step, done), loss, raw_grads = agent.train(n_step)
 		
 		# Update game status.
@@ -88,7 +87,7 @@ def learner(idx, agent) :
 		total_step+= n_step
 
 		# Clipped gradients.
-		# grads = [np.clip(x, -100, 100) for x in raw_grads]
+		grads = [np.clip(x, -100, 100) for x in raw_grads]
 		grads = raw_grads
 
 		# Game status.
@@ -162,7 +161,7 @@ def controller(network, event) :
 			
 			nb_game[src]+= 1
 
-			# Display worker status.
+			# Display worker status. This part is not really important.
 			table_length = (15*4+5)
 			print "\n"+" "*table_length
 			print "%s%-15s%-15s%-15s%-15s%-5s%s" % \
@@ -185,6 +184,7 @@ def controller(network, event) :
 			timer(start_time, time.time())
 			print ", learning rate = %.6f, step = %i"%(K.eval(network.learning_rate), K.eval(network.global_step)),
 			print "\033[F",
+			# --
 
 			if (T%save_period == 0) :
 				network.save(SAVE_PATH)
@@ -228,6 +228,7 @@ if __name__ == "__main__" :
 			brain.load(LOAD_PATH)
 
 		# event is clear => all threads stop.
+		# event is clear when Ctrl + C is hit.
 		event = threading.Event()
 		event.set()
 
@@ -239,7 +240,7 @@ if __name__ == "__main__" :
 			x.start()
 		try :
 			while True :
-				# Save CPU power.
+				# Save CPU cycle.
 				time.sleep(0.1)
 		except KeyboardInterrupt :
 			print "\n"*(n_node+2)
