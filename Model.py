@@ -37,7 +37,7 @@ def ModelVP(obs_shape, n_action, use_LSTM, entropy_weight=1e-2, model_only=False
 
 		x = TimeDistributed(Flatten())(x) # (1, None, H/8 * W/8 * 32)
 
-		x = GRU(128, stateful=True, return_sequences=True)(x)	# (1, None, 128)
+		x = LSTM(128, stateful=True, return_sequences=True)(x)	# (1, None, 128)
 
 		V = TimeDistributed(Dense(1)) (x)						# (1, None, 1)
 		V = Lambda(lambda x: K.reshape(x, (-1, 1))) (V) 		# (None, 1)
@@ -46,12 +46,10 @@ def ModelVP(obs_shape, n_action, use_LSTM, entropy_weight=1e-2, model_only=False
 		P = Lambda(lambda x: K.reshape(x, (-1, n_action))) (P) 				# (None, n_action)
 
 	else :
-		x = Conv2D(16, (8, 8), strides=(4, 4), padding="same", activation="relu")(x)
-		x = Conv2D(32, (4, 4), strides=(2, 2), padding="same", activation="relu")(x)
-		# x = Conv2D(16, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
-		# x = Conv2D(32, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
-		# x = Conv2D(64, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
-		# x = Conv2D(64, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
+		x = Conv2D(16, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
+		x = Conv2D(32, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
+		x = Conv2D(64, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
+		x = Conv2D(64, (5, 5), strides=(2, 2), padding="same", activation="relu")(x)
 		x = Dense(256, activation="relu")(Flatten()(x))
 
 		V = Dense(1)(x)
