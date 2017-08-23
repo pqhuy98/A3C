@@ -20,8 +20,8 @@ How it works :
 6) The agent receives response (new weights) from master and replace it's CNN weights with new weights.
 7) Master and agents run that loop forever, or until Ctrl + C is hit.
 
-Computation can be distributed on multi machine using MPI. This only makes sense when communication cost (which is proportional to size of gradient tensors) is smaller then back-propagation cost plus environment simulation cost.  
-This implies that :
+Computation can be distributed on multi machine using MPI. This only makes sense when communication cost (which is proportional to size of gradient tensors) is smaller than back-propagation cost plus environment simulation cost.  
+This implies :
 1) a big network with small amount of parameters like Convolutional layers
 2) or heavy environments like GTA V, Starcraft 2...  
 
