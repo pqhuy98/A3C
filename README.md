@@ -4,7 +4,7 @@ Async Advantage Actor Critic
 Implementation of https://arxiv.org/abs/1602.01783 using Tensorflow - Keras and OpenAI gym environments.  
 
 Lazy guide - how to run :
-1) Install Python, Tensorflow, Keras, OpenaI gym and MPI.
+1) Install Python, Tensorflow, Keras, OpenaI gym, MPI and mpi4py (MPI for Python).
 2) If you want to run this code on a cluster, [configurate](http://mpitutorial.com/tutorials/) MPI so that it can run on your cluster. 
 3) Edit file `peers` to specify nodes' IP addresses.
 4) Command line : `mpiexec -np 12 -hostfile peers python -B main.py`. Replace `12` with `number of agent + 1`.
