@@ -24,4 +24,5 @@ Computation can be distributed on multi machine using MPI. This only makes sense
 This implies that :
 1) a big network with small amount of parameters like Convolutional layers
 2) or heavy environments like GTA V, Starcraft 2...  
+
 ... would benefit from distributed computing.
